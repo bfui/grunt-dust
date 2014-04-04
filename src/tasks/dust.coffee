@@ -6,7 +6,7 @@
 # Licensed under the MIT license.
 ###
 
-module.exports = ( grunt ) ->
+module.exports = ( grunt, config ) ->
 	# Link to Underscore.js
 	_ = grunt.util._
 
@@ -21,6 +21,7 @@ module.exports = ( grunt ) ->
 	commonjsHelper = require( "../helpers/commonjs" ).init grunt
 	runtime = require( "../helpers/dustjs-runtime" ).init grunt
 	optimizers = require( "../helpers/optimizers" ).init grunt
+	customDustHelper = require('../helpers/custom-dust').init grunt
 
 	# ==========================================================================
 	# TASKS
@@ -114,6 +115,8 @@ module.exports = ( grunt ) ->
 					joined = amdHelper joined, options.wrapperOptions.deps, options.wrapperOptions.packageName, returning
 				else if options.wrapper is "commonjs"
 					joined = commonjsHelper joined, options.wrapperOptions.deps, options.wrapperOptions.returning
+				else if options.wrapper is "custom-dust"
+					joined = customDustHelper joined, options.wrapperOptions.deps, options.wrapper.returning
 
 				grunt.file.write file.dest, joined
 
